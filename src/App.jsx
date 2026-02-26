@@ -1,34 +1,27 @@
-import { useEffect, useState } from "react";
-import CapsuleForm from "./components/CapsuleForm";
-import CapsuleList from "./components/CapsuleList";
-import { getCapsules } from "./services/api";
-import "./index.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Sidebar from "./layout/Sidebar";
+import Header from "./layout/Header";
+import CreateCapsule from "./pages/CreateCapsule";
+import Memories from "./pages/Memories";
 
 function App() {
-  const [capsules, setCapsules] = useState([]);
-
-  const fetchCapsules = async () => {
-    try {
-      const data = await getCapsules();
-      setCapsules(data);
-    } catch (error) {
-      console.error("Error fetching capsules");
-    }
-  };
-
-  useEffect(() => {
-    fetchCapsules();
-  }, []);
-
   return (
-    <div className="container">
-      <h1>⏳ Digital Time Capsule</h1>
-      <CapsuleForm refreshCapsules={fetchCapsules} />
-     <CapsuleList
-  capsules={capsules}
-  refreshCapsules={fetchCapsules}
-/>
-    </div>
+    <BrowserRouter>
+      <div className="flex min-h-screen">
+        <Sidebar />
+
+        <div className="flex-1">
+          <Header />
+
+          <div className="p-6">
+            <Routes>
+              <Route path="/" element={<CreateCapsule />} />
+              <Route path="/memories" element={<Memories />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

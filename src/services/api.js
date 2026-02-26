@@ -3,10 +3,7 @@ const BASE_URL = "http://localhost:5000/api/capsule";
 export const createCapsule = async (data) => {
   const response = await fetch(BASE_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    body: data, // ✅ don't stringify
   });
 
   if (!response.ok) {
@@ -21,6 +18,18 @@ export const getCapsules = async () => {
 
   if (!response.ok) {
     throw new Error("Failed to fetch capsules");
+  }
+
+  return response.json();
+};
+
+export const deleteCapsule = async (id) => {
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete capsule");
   }
 
   return response.json();
